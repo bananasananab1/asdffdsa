@@ -1,3 +1,0 @@
-function incrementCounter(number) {
-
-}
