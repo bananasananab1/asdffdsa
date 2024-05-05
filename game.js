@@ -8,7 +8,7 @@ function count() {
         document.getElementById("resetchance").innerText = 100;
     } else {
         counts = counts + 1;
-        document.getElementById("resetchance").innerText = (1/counts).toFixed(3);
+        document.getElementById("resetchance").innerText = (100/counts).toFixed(3)+"%";
     }
     if (counts>alltimehigh) {
         alltimehigh = counts;
