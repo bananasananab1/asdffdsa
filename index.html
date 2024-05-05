@@ -6,7 +6,12 @@
     <body>
         <p>All Time Highest: <span id="ath">0</p>
         <p>Highest: <span id="high">0</p>
-        <button onclick="count()">increase</button>
+        <button onclick="count()">Chance of increase is <span id = "resetchance">0</button>
+        <button onclick="opencloseupgs()">Upgrades</button>
+        <div class="upgs" id="upgdiv">
+            <p>Upgrades</p>
+            <button onclick="lessenreset1()" id = "lessenupg">Lower the reset chances by 25%. Bought: <span id="lessenresetupg">false</button>
+        </div>
         <p style="color: rgb(0, 0, 0);">The number has a number percent chance of resetting to 0 each click </p>
         <script src="technical/ExpantaNum.js"></script>
         <script src="game.js"></script>

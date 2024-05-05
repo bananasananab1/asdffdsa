@@ -28,5 +28,8 @@ p {
 
 span {
     font-weight: bold;
-    color: #007bff;
+    color: #9eee1e;
+}
+.upgs {
+    display: none;
 }
