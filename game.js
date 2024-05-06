@@ -1,17 +1,46 @@
 let counts = 0;
+let attempts = 0;
+let reb = 0;
+let buyables = {
+    1: { current: 0, max: 25, cost: 25, change: 1, id: "Buyable1v"},
+    2: { current: 0, max: 1,  cost: 20, change: 25,id: "lessenresetupg" }
+};
+let divs = ["rebirthsdiv","upgsdiv"];
 let alltimehigh = 0;
 let ch = 100;
-let buyables = {
-    1: { current: 0, max: 25, cost: 25, change: 1, id: "Buyable1v"}
-};
+
+let countmulti = 1;
+let rebmulti = 1;
 let bulk = 1
+let saveddata = localStorage.getItem("savedata");
+if (saveddata) {
+    let loadeddata = JSON.parse(saveddata);
+    console.log(loadeddata);
+    counts = loadeddata[0];
+    attempts = loadeddata[1];
+    reb = loadeddata[2];
+    buyables = loadeddata[3];
+    alltimehigh = loadeddata[4];
+    ch = loadeddata[5];
+    countmulti = loadeddata[6];
+    rebmulti = loadeddata[7];
+    bulk = loadeddata[8];
+    //upd data
+    document.getElementById("rebpts").innerText = reb+" Rebirth Points"
+    document.getElementById("resetchance").innerText = (ch/counts).toFixed(3)+"%";
+    document.getElementById("attemptshtml").innerText = attempts;
+    document.getElementById("ath").innerText = alltimehigh;
+    document.getElementById("high").innerText = counts;
+}
 function count() {
+    attempts += 1;
+    document.getElementById("attemptshtml").innerText = attempts;
     let rnd = Math.random();
     if (counts>rnd*ch){
         counts = 0;
         document.getElementById("resetchance").innerText = 100;
     } else {
-        counts = counts + 1;
+        counts += countmulti;
         document.getElementById("resetchance").innerText = (ch/counts).toFixed(3)+"%";
     }
     if (counts>alltimehigh) {
@@ -20,21 +49,29 @@ function count() {
     }
     document.getElementById("high").innerText = counts;
 }
-function opencloseupgs() {
-    var div = document.getElementById("upgdiv");
-    if (div.style.display === "none") {
-        div.style.display = "block";
+function openclose(elementId) {
+    let ele = elementId+"div";
+    divs.forEach((v) => {
+        document.getElementById(v).style.display = 'none';
+    });
+    var element = document.getElementById(ele);
+    if (element) {
+        element.style.display = (element.style.display === 'none') ? 'block' : 'none';
     } else {
-        div.style.display = "none";
+        console.error('Element with ID ' + elementId + ' not found.');
     }
 }
-function lessenreset1() {
-    if (alltimehigh>=20){
-        alltimehigh = alltimehigh - 20;
-        ch = ch-25;
-        document.getElementById("lessenupg").disabled = true;
-        document.getElementById("lessenresetupg").innerText = "true";
-        document.getElementById("ath").innerText = alltimehigh;
+function rebirth(){
+    if (count>=30) {
+        counts = 0;
+        alltimehigh = 0;
+        buyables.forEach((v) => {
+            v.current = 0;
+            document.getElementById(buyables[v].id).disabled = false;
+        });
+        document.getElementById("lessenupg").disabled = false;
+        reb += rebmulti;
+        document.getElementById("rebpts").innerText = reb+" Rebirth Points";
     }
 }
 function Buyable(upg){
@@ -48,4 +85,12 @@ function Buyable(upg){
     } else {
         document.getElementById(buyables[upg].id).disabled = true;
     }
+    document.getElementById("ath").innerText = alltimehigh;
+}
+function save(){
+    let data = [counts,attempts,reb,buyables,alltimehigh,ch,countmulti,rebmulti,bulk];
+    let jsondata = JSON.stringify(data);
+    console.log("Saved Data");
+    console.log(jsondata)
+    localStorage.setItem('savedata',jsondata);
 }
