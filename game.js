@@ -78,7 +78,7 @@ function Buyable(upg){
     if (buyables[upg].current != buyables[upg].max) {
         if (alltimehigh>= buyables[upg].cost) { 
             buyables[upg].current += bulk;
-            ch -= buyables[upg].change;
+            ch += buyables[upg].change;
             alltimehigh -= buyables[upg].cost;
             document.getElementById(buyables[upg].id).innerText = buyables[upg].current+"/"+buyables[upg].max;    
         }
@@ -91,6 +91,13 @@ function save(){
     let data = [counts,attempts,reb,buyables,alltimehigh,ch,countmulti,rebmulti,bulk];
     let jsondata = JSON.stringify(data);
     console.log("Saved Data");
+    console.log(jsondata)
+    localStorage.setItem('savedata',jsondata);
+}
+function resetdata(){
+    let data = [0,0,0,{1: { current: 0, max: 25, cost: 25, change: 1, id: "Buyable1v"},2: { current: 0, max: 1,  cost: 20, change: 25,id: "lessenresetupg" }},0,100,1,1,1];
+    let jsondata = JSON.stringify(data);
+    console.log("Reset Data");
     console.log(jsondata)
     localStorage.setItem('savedata',jsondata);
 }
