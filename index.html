@@ -12,11 +12,14 @@
         <div class="rebirths" id="rebirthsdiv">
             <p>Rebirth Points: <span id="rebpts">0</p>
             <button onclick="rebirth()">Rebirth</button>
+            <p style="font-size: 8;">formula: floor(score/30)</p>
+            <button onclick="RebBuyable(1)" id = "RB1">Make it easier to gain score<span id="RB1v">Cost: nan Bought: nan</button>
+            <button onclick="RebBuyable(2)" id = "RB2">Make it easier to gain Rebirth points<span id="RB2v">Cost: nan Bought: nan</button>
         </div>
         <div class="upgs" id="upgsdiv">
             <p>Upgrades</p>
             <p style="font-size: 8;">Upgrades are based on high score</p>
-            <button onclick="Buyable(2)" id = "lessenupg">Lower the reset chances by 25%. cost: 20  Bought: <span id="lessenresetupg">false</button>
+            <button onclick="Buyable(2)" id = "lessenupg">Lower the reset chances by 25%. cost: 20  Bought: <span id="lessenresetupg">0/1</button>
             <button onclick="Buyable(1)" id = "Buyable1">Lower the reset chances by 1% per. cost: 25 per  Bought: <span id="Buyable1v">0/25</button>
         </div>
         <p style="color: rgb(0, 0, 0);">Attempts: <span id = "attemptshtml">0</p>
