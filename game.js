@@ -1,14 +1,17 @@
+// const ExpantaNum = require("./technical/ExpantaNum");
 
 let counts = new ExpantaNum(0);
 let attempts = new ExpantaNum(0);
 let reb = new ExpantaNum(0);
+let autotps = ExpantaNum(0);
 let buyables = {
     1: { current: ExpantaNum(0), max: ExpantaNum(25), cost: ExpantaNum(25), change: ExpantaNum(1), id: "Buyable1v"},
     2: { current: ExpantaNum(0), max: ExpantaNum(1),  cost: ExpantaNum(20), change: ExpantaNum(25),id: "lessenresetupg" }
 };
 let rebbuyables = {
-    1: {current: ExpantaNum(0), max: ExpantaNum(9999999999), cost: ExpantaNum(1), change: ExpantaNum(1), costscale: ExpantaNum(2), cscalemode: "^", changescale: ExpantaNum(2), chscalemode: "^", changing: "ch",  id: "RB1v"},
-    2: {current: ExpantaNum(0), max: ExpantaNum(9999999999), cost: ExpantaNum(1), change: ExpantaNum(1), costscale: ExpantaNum(2), cscalemode: "^", changescale: ExpantaNum(2), chscalemode: "^", changing: "reb", id: "RB2v"},
+    1: {current: ExpantaNum(0), max: ExpantaNum(1e303), cost: ExpantaNum(1), change: ExpantaNum(1), costscale: ExpantaNum(2), cscalemode: "^", changescale: ExpantaNum(2), chscalemode: "^", changing: "ch",  id: "RB1v"},
+    2: {current: ExpantaNum(0), max: ExpantaNum(1e303), cost: ExpantaNum(1), change: ExpantaNum(1), costscale: ExpantaNum(2), cscalemode: "^", changescale: ExpantaNum(2), chscalemode: "^", changing: "reb", id: "RB2v"},
+    3: {current: ExpantaNum(0), max: ExpantaNum(1e303), cost: ExpantaNum(1), costscale: ExpantaNum(10), cscalemode: "^", changing: "auto", id: "RB3v"},
 };
 let divs = ["rebirthsdiv","upgsdiv"];
 let alltimehigh = new ExpantaNum(0);
@@ -34,7 +37,7 @@ if (saveddata) {
     rebbuyables = loadeddata[9];
     //upd data;
     const asdf = ch.div(counts)
-    document.getElementById("rebpts").innerText = reb+" Rebirth Points";
+    document.getElementById("rebpts").innerText = reb+" Rebirth Points";  
     document.getElementById("resetchance").innerText = asdf.toString();
     document.getElementById("attemptshtml").innerText = attempts;
     document.getElementById("ath").innerText = alltimehigh;
@@ -42,7 +45,7 @@ if (saveddata) {
 }
 function count() {
     attempts = attempts.add("1");
-    document.getElementById("attemptshtml").innerText = attempts;
+    document.getElementById("attemptshtml").innerText = attempts.toString();
     let rnd = Math.random();
     if (counts.gt(ch.mul(rnd))){
         counts = ExpantaNum(0);
@@ -113,11 +116,15 @@ function RebBuyable(upg){
             upgnum.current = ExpantaNum(upgnum.current).add(ExpantaNum(1));
             rebmulti = rebmulti.add(currentgain);
             reb = reb.sub(currentcost);
-        }
+        } else if(reb.gte(currentcost)&& upgnum.changing == "auto" ){
+            upgnum.current = ExpantaNum(upgnum.current).add(ExpantaNum(1));
+            autotps = autotps.mul(1.5);
+            reb = reb.sub(currentcost);
+            document.getElementById(upgnum.id).innerText = "Cost: "+currentcost.toString()+" Current Auto Gain: "+(1).div(autotps).toString(); 
+        };
     } else {
         document.getElementById(upgnum.id).disabled = true;
     }
-    document.getElementById(upgnum.id).innerText = " Cost:"+ ExpantaNum(currentcost).toString() + ", Bought: "+ExpantaNum(upgnum.current).toString()+"/"+ExpantaNum(upgnum.max).toString();  
     document.getElementById("rebpts").innerText = reb.toString()+" Rebirth Points"; 
 }
 function Buyable(upg){
@@ -147,4 +154,9 @@ function resetdata(){
     console.log("Reset Data");
     console.log(jsondata)
     localStorage.setItem('savedata',jsondata);
+}
+while (true) {
+    if(autotps>0){
+        setTimeout(count(),1/autotps)
+    }
 }
